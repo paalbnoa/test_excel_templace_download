@@ -3,6 +3,7 @@
 A small Next.js app that generates an Excel template for student data.
 
 ## Note to self:
+- available at https://test-excel-templace-download.vercel.app/
 - used Codex to prompt the whole thing
 - installed GIT locally
 - created repo on GITHUB
