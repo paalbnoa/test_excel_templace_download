@@ -2,6 +2,14 @@
 
 A small Next.js app that generates an Excel template for student data.
 
+## Note to self:
+- used Codex to prompt the whole thing
+- installed GIT locally
+- created repo on GITHUB
+- pushed to repo from CODEX
+- connected to repo from Vercel
+- deployed to Vercel
+
 ## Features
 
 - Professional landing page with a school-name input
