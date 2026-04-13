@@ -2,16 +2,32 @@
 
 import { useState } from "react";
 
+const SEMESTER_OPTIONS = ["2025H", "2026V", "2026H"];
+
 export default function HomePage() {
   const [schoolName, setSchoolName] = useState("");
+  const [selectedSemesters, setSelectedSemesters] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState("");
+
+  function handleSemesterToggle(semester) {
+    setSelectedSemesters((currentSemesters) =>
+      currentSemesters.includes(semester)
+        ? currentSemesters.filter((value) => value !== semester)
+        : [...currentSemesters, semester]
+    );
+  }
 
   async function handleDownload() {
     const trimmedSchoolName = schoolName.trim();
 
     if (!trimmedSchoolName) {
-      setError("Please enter the name of a school before downloading the template.");
+      setError("Please enter the name of an institution before downloading the template.");
+      return;
+    }
+
+    if (selectedSemesters.length === 0) {
+      setError("Please select at least one semester before downloading the template.");
       return;
     }
 
@@ -24,7 +40,10 @@ export default function HomePage() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ schoolName: trimmedSchoolName })
+        body: JSON.stringify({
+          schoolName: trimmedSchoolName,
+          semesters: selectedSemesters
+        })
       });
 
       if (!response.ok) {
@@ -53,16 +72,16 @@ export default function HomePage() {
     <main className="page-shell">
       <section className="hero-card">
         <div className="eyebrow">Semester fee template generator</div>
-        <h1>Download a template for your school.</h1>
+        <h1>Download a template for your institution.</h1>
         <p className="intro-text">
-          Enter the school name below to generate a polished spreadsheet with 20 rows
-          of sample data. The educational institution column is prefilled and protected,
-          while the email column includes Excel validation.
+          Enter the institution name and choose one or more semesters to generate a
+          polished spreadsheet template. The downloaded file includes validation for
+          PersonID, Epost, and the allowed semester values.
         </p>
 
         <div className="form-panel">
           <label className="field-label" htmlFor="schoolName">
-            Name of school
+            Name of institution
           </label>
           <input
             id="schoolName"
@@ -73,6 +92,22 @@ export default function HomePage() {
             value={schoolName}
             onChange={(event) => setSchoolName(event.target.value)}
           />
+
+          <div className="semester-group">
+            <p className="field-label">Semester(s)</p>
+            <div className="semester-options">
+              {SEMESTER_OPTIONS.map((semester) => (
+                <label key={semester} className="semester-option">
+                  <input
+                    type="checkbox"
+                    checked={selectedSemesters.includes(semester)}
+                    onChange={() => handleSemesterToggle(semester)}
+                  />
+                  <span>{semester}</span>
+                </label>
+              ))}
+            </div>
+          </div>
 
           <button
             type="button"

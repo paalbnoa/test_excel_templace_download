@@ -110,6 +110,29 @@ input {
   transform: translateY(-1px);
 }
 
+.semester-group {
+  margin-top: 20px;
+}
+
+.semester-options {
+  display: grid;
+  gap: 10px;
+}
+
+.semester-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(19, 32, 51, 0.14);
+  border-radius: 16px;
+  background: white;
+}
+
+.semester-option input {
+  accent-color: var(--accent);
+}
+
 .download-button {
   margin-top: 18px;
   padding: 15px 22px;

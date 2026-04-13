@@ -1,34 +1,21 @@
 import ExcelJS from "exceljs";
 
-const HEADERS = ["Name", "email", "fnr", "Phone number", "Semester fee code"];
-
-const DUMMY_ROWS = [
-  ["Emma Hansen", "emma.hansen@example.com", "12039812345", "+47 901 12 301", "SF-1001"],
-  ["Liam Johansen", "liam.johansen@example.com", "23049712345", "+47 901 12 302", "SF-1002"],
-  ["Olivia Larsen", "olivia.larsen@example.com", "14089612345", "+47 901 12 303", "SF-1003"],
-  ["Noah Berg", "noah.berg@example.com", "05119512345", "+47 901 12 304", "SF-1004"],
-  ["Sofie Nilsen", "sofie.nilsen@example.com", "16029412345", "+47 901 12 305", "SF-1005"],
-  ["Jakob Andersen", "jakob.andersen@example.com", "27039312345", "+47 901 12 306", "SF-1006"],
-  ["Ella Pedersen", "ella.pedersen@example.com", "18059212345", "+47 901 12 307", "SF-1007"],
-  ["William Solberg", "william.solberg@example.com", "09069112345", "+47 901 12 308", "SF-1008"],
-  ["Nora Kristiansen", "nora.kristiansen@example.com", "20079012345", "+47 901 12 309", "SF-1009"],
-  ["Theodor Eriksen", "theodor.eriksen@example.com", "11088912345", "+47 901 12 310", "SF-1010"],
-  ["Leah Dahl", "leah.dahl@example.com", "22018812345", "+47 901 12 311", "SF-1011"],
-  ["Henrik Hauge", "henrik.hauge@example.com", "13028712345", "+47 901 12 312", "SF-1012"],
-  ["Maja Strand", "maja.strand@example.com", "24038612345", "+47 901 12 313", "SF-1013"],
-  ["Magnus Moe", "magnus.moe@example.com", "15048512345", "+47 901 12 314", "SF-1014"],
-  ["Ingrid Lie", "ingrid.lie@example.com", "26058412345", "+47 901 12 315", "SF-1015"],
-  ["Lucas Eide", "lucas.eide@example.com", "17068312345", "+47 901 12 316", "SF-1016"],
-  ["Sara Halvorsen", "sara.halvorsen@example.com", "28078212345", "+47 901 12 317", "SF-1017"],
-  ["Aksel Sunde", "aksel.sunde@example.com", "19088112345", "+47 901 12 318", "SF-1018"],
-  ["Amalie Bakke", "amalie.bakke@example.com", "30098012345", "+47 901 12 319", "SF-1019"],
-  ["Benjamin Lund", "benjamin.lund@example.com", "21117912345", "+47 901 12 320", "SF-1020"]
+const SEMESTER_OPTIONS = ["2025H", "2026V", "2026H"];
+const COLUMNS = [
+  { header: "PersonID", key: "personId", width: 18 },
+  { header: "Fornavn", key: "fornavn", width: 20 },
+  { header: "Etternavn", key: "etternavn", width: 22 },
+  { header: "Sist.bet.sem.avg", key: "sistBetSemAvg", width: 18 },
+  { header: "Fritatt.sem.avg", key: "fritattSemAvg", width: 18 },
+  { header: "Epost", key: "epost", width: 30 },
+  { header: "Prefiks", key: "prefiks", width: 14 },
+  { header: "Mobilnummer", key: "mobilnummer", width: 18 }
 ];
 
 const EXTRA_READY_ROWS = 100;
 const HEADER_ROW = 6;
 const FIRST_DATA_ROW = HEADER_ROW + 1;
-const LAST_READY_ROW = FIRST_DATA_ROW + DUMMY_ROWS.length + EXTRA_READY_ROWS - 1;
+const LAST_READY_ROW = FIRST_DATA_ROW + EXTRA_READY_ROWS - 1;
 
 function applyCellBorders(cell, color) {
   cell.border = {
@@ -39,13 +26,13 @@ function applyCellBorders(cell, color) {
   };
 }
 
-function addSchoolField(worksheet, schoolName) {
+function addMetadataFields(worksheet, schoolName, selectedSemesters) {
   worksheet.getRow(1).height = 18;
   worksheet.getRow(3).height = 24;
   worksheet.getRow(4).height = 28;
   worksheet.getRow(5).height = 18;
 
-  worksheet.getCell("A3").value = "School name:";
+  worksheet.getCell("A3").value = "Institusjon:";
   worksheet.getCell("A3").font = {
     bold: true,
     color: { argb: "FF123B63" },
@@ -72,6 +59,36 @@ function addSchoolField(worksheet, schoolName) {
   };
   worksheet.getCell("B3").alignment = { vertical: "middle", horizontal: "left" };
   applyCellBorders(worksheet.getCell("B3"), "FFD5DDE7");
+  worksheet.getCell("B3").protection = { locked: true };
+
+  worksheet.getCell("A4").value = "Semestre:";
+  worksheet.getCell("A4").font = {
+    bold: true,
+    color: { argb: "FF123B63" },
+    size: 11
+  };
+  worksheet.getCell("A4").alignment = { vertical: "middle" };
+  worksheet.getCell("A4").fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "FFF5F8FB" }
+  };
+  applyCellBorders(worksheet.getCell("A4"), "FFD5DDE7");
+
+  worksheet.getCell("B4").value = selectedSemesters.join(", ");
+  worksheet.getCell("B4").font = {
+    bold: true,
+    size: 12,
+    color: { argb: "FF132033" }
+  };
+  worksheet.getCell("B4").fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "FFEAF2F8" }
+  };
+  worksheet.getCell("B4").alignment = { vertical: "middle", horizontal: "left", wrapText: true };
+  applyCellBorders(worksheet.getCell("B4"), "FFD5DDE7");
+  worksheet.getCell("B4").protection = { locked: true };
 }
 
 function configureHeaderRow(worksheet) {
@@ -88,50 +105,35 @@ function configureHeaderRow(worksheet) {
   });
 }
 
-function configureDataSheet(worksheet, schoolName) {
-  worksheet.columns = [
-    { header: HEADERS[0], key: "name", width: 24 },
-    { header: HEADERS[1], key: "email", width: 30 },
-    { header: HEADERS[2], key: "fnr", width: 18 },
-    { header: HEADERS[3], key: "phoneNumber", width: 20 },
-    { header: HEADERS[4], key: "semesterFeeCode", width: 20 }
-  ];
+function buildSemesterValidationFormula(selectedSemesters) {
+  return `"${selectedSemesters.join(",")}"`;
+}
 
-  addSchoolField(worksheet, schoolName);
+function configureDataSheet(worksheet, schoolName, selectedSemesters) {
+  worksheet.columns = COLUMNS;
+
+  addMetadataFields(worksheet, schoolName, selectedSemesters);
   worksheet.spliceRows(1, 1);
 
-  worksheet.getCell(`A${HEADER_ROW}`).value = HEADERS[0];
-  worksheet.getCell(`B${HEADER_ROW}`).value = HEADERS[1];
-  worksheet.getCell(`C${HEADER_ROW}`).value = HEADERS[2];
-  worksheet.getCell(`D${HEADER_ROW}`).value = HEADERS[3];
-  worksheet.getCell(`E${HEADER_ROW}`).value = HEADERS[4];
-  configureHeaderRow(worksheet);
-
-  const rows = [
-    ...DUMMY_ROWS,
-    ...Array.from({ length: EXTRA_READY_ROWS }, () => ["", "", "", "", ""])
-  ];
-
-  rows.forEach((row, index) => {
-    const rowNumber = FIRST_DATA_ROW + index;
-    worksheet.getCell(`A${rowNumber}`).value = row[0];
-    worksheet.getCell(`B${rowNumber}`).value = row[1];
-    worksheet.getCell(`C${rowNumber}`).value = row[2];
-    worksheet.getCell(`D${rowNumber}`).value = row[3];
-    worksheet.getCell(`E${rowNumber}`).value = row[4];
+  COLUMNS.forEach(({ header }, index) => {
+    const columnLetter = worksheet.getColumn(index + 1).letter;
+    worksheet.getCell(`${columnLetter}${HEADER_ROW}`).value = header;
   });
+  configureHeaderRow(worksheet);
 
   for (let rowNumber = FIRST_DATA_ROW; rowNumber <= LAST_READY_ROW; rowNumber += 1) {
     const row = worksheet.getRow(rowNumber);
 
-    row.eachCell((cell) => {
+    COLUMNS.forEach((_, index) => {
+      const cell = row.getCell(index + 1);
       cell.alignment = { vertical: "middle" };
       applyCellBorders(cell, "FFE4EAF1");
       cell.protection = { locked: false };
     });
 
     if (rowNumber % 2 === 1) {
-      row.eachCell((cell) => {
+      COLUMNS.forEach((_, index) => {
+        const cell = row.getCell(index + 1);
         cell.fill = {
           type: "pattern",
           pattern: "solid",
@@ -140,31 +142,129 @@ function configureDataSheet(worksheet, schoolName) {
       });
     }
 
+    worksheet.getCell(`A${rowNumber}`).dataValidation = {
+      type: "whole",
+      operator: "greaterThanOrEqual",
+      allowBlank: false,
+      showErrorMessage: true,
+      errorStyle: "error",
+      errorTitle: "Invalid PersonID",
+      error: "PersonID is required and must contain whole numbers only.",
+      formulae: [0]
+    };
+
     worksheet.getCell(`B${rowNumber}`).dataValidation = {
       type: "custom",
-      allowBlank: rowNumber > FIRST_DATA_ROW + DUMMY_ROWS.length - 1,
+      allowBlank: false,
+      showErrorMessage: true,
+      errorStyle: "error",
+      errorTitle: "Missing Fornavn",
+      error: "Fornavn is required.",
+      formulae: [`LEN(TRIM(B${rowNumber}))>0`]
+    };
+
+    worksheet.getCell(`C${rowNumber}`).dataValidation = {
+      type: "custom",
+      allowBlank: false,
+      showErrorMessage: true,
+      errorStyle: "error",
+      errorTitle: "Missing Etternavn",
+      error: "Etternavn is required.",
+      formulae: [`LEN(TRIM(C${rowNumber}))>0`]
+    };
+
+    worksheet.getCell(`D${rowNumber}`).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      showErrorMessage: true,
+      errorStyle: "error",
+      errorTitle: "Invalid semester",
+      error: "Sist.bet.sem.avg is required and must match one of the allowed semester values.",
+      formulae: [buildSemesterValidationFormula(selectedSemesters)]
+    };
+
+    worksheet.getCell(`F${rowNumber}`).dataValidation = {
+      type: "custom",
+      allowBlank: false,
       showErrorMessage: true,
       errorStyle: "error",
       errorTitle: "Invalid email",
-      error: "Please enter a valid email address.",
+      error: "Epost is required and must be a valid email address.",
       formulae: [
-        `OR(B${rowNumber}="",AND(ISNUMBER(SEARCH("@",B${rowNumber})),ISNUMBER(SEARCH(".",B${rowNumber},SEARCH("@",B${rowNumber})+2)),LEN(B${rowNumber})-LEN(SUBSTITUTE(B${rowNumber},"@",""))=1))`
+        `AND(LEN(TRIM(F${rowNumber}))>0,ISNUMBER(SEARCH("@",F${rowNumber})),ISNUMBER(SEARCH(".",F${rowNumber},SEARCH("@",F${rowNumber})+2)),LEN(F${rowNumber})-LEN(SUBSTITUTE(F${rowNumber},"@",""))=1)`
+      ]
+    };
+
+    worksheet.getCell(`G${rowNumber}`).dataValidation = {
+      type: "custom",
+      allowBlank: false,
+      showErrorMessage: true,
+      errorStyle: "error",
+      errorTitle: "Missing Prefiks",
+      error: "Prefiks is required.",
+      formulae: [`LEN(TRIM(G${rowNumber}))>0`]
+    };
+
+    worksheet.getCell(`H${rowNumber}`).dataValidation = {
+      type: "custom",
+      allowBlank: false,
+      showErrorMessage: true,
+      errorStyle: "error",
+      errorTitle: "Invalid phone number",
+      error: "Mobilnummer is required and must be an 8-digit Norwegian mobile number without country code.",
+      formulae: [
+        `AND(LEN(H${rowNumber})=8,ISNUMBER(H${rowNumber}),OR(LEFT(H${rowNumber},1)="4",LEFT(H${rowNumber},1)="9"))`
       ]
     };
   }
 
-  worksheet.autoFilter = `A${HEADER_ROW}:E${LAST_READY_ROW}`;
+  worksheet.autoFilter = `A${HEADER_ROW}:H${LAST_READY_ROW}`;
   worksheet.views = [{ state: "frozen", ySplit: HEADER_ROW }];
 }
 
-async function buildWorkbook(schoolName) {
+function configureInstructionSheet(worksheet, selectedSemesters) {
+  worksheet.columns = [{ width: 110 }];
+
+  const instructionRows = [
+    "Instructions",
+    "This workbook contains a template for importing data about paid semester fees.",
+    "",
+    "Validation rules:",
+    "1. All columns are mandatory except Fritatt.sem.avg.",
+    "2. PersonID: This field is required and only accepts whole numbers. Letters and other characters are not allowed.",
+    `3. Sist.bet.sem.avg: This field is required and may only contain one of the semester values selected for this download: ${selectedSemesters.join(", ")}.`,
+    "4. Epost: This field is required and must look like a valid email address and contain one @ sign and a period after the @ sign.",
+    "5. Mobilnummer: This field is required and must be a Norwegian mobile number with 8 digits, without a country code, and it must start with 4 or 9.",
+    "",
+    "Other notes:",
+    "1. The table contains 100 blank rows ready for data entry."
+  ];
+
+  instructionRows.forEach((text, index) => {
+    const cell = worksheet.getCell(`A${index + 1}`);
+    cell.value = text;
+    cell.alignment = { vertical: "top", wrapText: true };
+    cell.font = { bold: false };
+  });
+
+  worksheet.getCell("A1").font = {
+    bold: true,
+    size: 16,
+    color: { argb: "FF123B63" }
+  };
+  worksheet.getCell("A4").font = { bold: true };
+  worksheet.getCell("A10").font = { bold: true };
+}
+
+async function buildWorkbook(schoolName, selectedSemesters) {
   const workbook = new ExcelJS.Workbook();
   const studentsSheet = workbook.addWorksheet("Students");
+  const instructionSheet = workbook.addWorksheet("Instructions");
 
-  configureDataSheet(studentsSheet, schoolName);
-
-  await studentsSheet.protect("template-lock", {
-    selectLockedCells: true,
+  configureDataSheet(studentsSheet, schoolName, selectedSemesters);
+  configureInstructionSheet(instructionSheet, selectedSemesters);
+  await studentsSheet.protect("", {
+    selectLockedCells: false,
     selectUnlockedCells: true,
     formatCells: false,
     formatColumns: false,
@@ -182,16 +282,27 @@ async function buildWorkbook(schoolName) {
 
 export async function POST(request) {
   try {
-    const { schoolName } = await request.json();
+    const { schoolName, semesters } = await request.json();
 
     if (!schoolName || typeof schoolName !== "string" || !schoolName.trim()) {
       return Response.json(
-        { error: "A valid school name is required." },
+        { error: "A valid institution name is required." },
         { status: 400 }
       );
     }
 
-    const workbook = await buildWorkbook(schoolName.trim());
+    if (
+      !Array.isArray(semesters) ||
+      semesters.length === 0 ||
+      semesters.some((semester) => !SEMESTER_OPTIONS.includes(semester))
+    ) {
+      return Response.json(
+        { error: "At least one valid semester is required." },
+        { status: 400 }
+      );
+    }
+
+    const workbook = await buildWorkbook(schoolName.trim(), semesters);
     const buffer = await workbook.xlsx.writeBuffer();
     const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.xlsx`;
 
