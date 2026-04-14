@@ -13,15 +13,18 @@ This application is a small portal for institutions that need to prepare and val
 
 1. The user enters the institution name.
 2. The user selects one or more allowed semesters from the preset list: `2025H`, `2026V`, `2026H`.
-3. When the user clicks `Download Template`, the browser sends the request to `/api/template`.
-4. The server generates a new `.xlsx` workbook using `ExcelJS`.
+3. The user can optionally choose to include test data in the Excel file before downloading it.
+4. When the user clicks `Download Template`, the browser sends the request to `/api/template`.
+5. The server generates a new `.xlsx` workbook using `ExcelJS`.
 5. The workbook includes:
    - A `Students` sheet
    - An `Instructions` sheet
    - The institution name in the sheet metadata
    - The selected semesters in the sheet metadata
    - 100 ready-to-fill table rows
-6. The `Students` sheet contains these columns:
+   - Optional sample/test data if the user selected that option
+6. If test data is included, the workbook is prefilled with 100 rows of valid sample data that matches the validation rules.
+7. The `Students` sheet contains these columns:
    - `PersonID`
    - `Fornavn`
    - `Etternavn`
@@ -30,7 +33,7 @@ This application is a small portal for institutions that need to prepare and val
    - `Epost`
    - `Prefiks`
    - `Mobilnummer`
-7. Excel validation rules are built into the template so the sheet itself helps prevent bad input:
+8. Excel validation rules are built into the template so the sheet itself helps prevent bad input:
    - `PersonID` must be whole numbers
    - `Fornavn` is required
    - `Etternavn` is required
@@ -38,7 +41,7 @@ This application is a small portal for institutions that need to prepare and val
    - `Epost` must look like a valid email address
    - `Prefiks` is required
    - `Mobilnummer` must be an 8-digit Norwegian mobile number starting with `4` or `9`
-8. The generated workbook is returned to the browser and downloaded as an `.xlsx` file.
+9. The generated workbook is returned to the browser and downloaded as an `.xlsx` file.
 
 ## Validate Workbook
 
