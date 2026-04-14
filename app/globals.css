@@ -52,6 +52,21 @@ input {
   backdrop-filter: blur(16px);
 }
 
+.whatido-link {
+  display: inline-flex;
+  margin-top: 20px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(18, 59, 99, 0.28);
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.whatido-link:hover {
+  color: var(--accent-hover);
+  border-color: rgba(13, 45, 75, 0.5);
+}
+
 .eyebrow {
   display: inline-flex;
   padding: 8px 14px;

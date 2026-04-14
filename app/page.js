@@ -240,6 +240,10 @@ export default function HomePage() {
             </section>
           ) : null}
         </div>
+
+        <a className="whatido-link" href="/WHATIDO.md" target="_blank" rel="noreferrer">
+          Read a step-by-step description of what this application does
+        </a>
       </section>
     </main>
   );
