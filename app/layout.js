@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Excel Template Portal",
-  description: "Generate enrollment templates for schools."
+  title: "Semester fee template portal",
+  description: "Generate semester fee templates for institutions."
 };
 
 export default function RootLayout({ children }) {

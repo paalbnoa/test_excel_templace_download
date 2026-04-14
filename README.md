@@ -10,6 +10,9 @@ A small Next.js app that generates an Excel template for student data.
 - pushed to repo from CODEX
 - connected to repo from Vercel
 - deployed to Vercel
+- to update:
+-   prompt ""push all code to github" or similar
+-   vercel is automatically updated
 
 ## Features
 
