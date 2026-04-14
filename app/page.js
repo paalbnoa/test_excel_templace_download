@@ -120,125 +120,155 @@ export default function HomePage() {
   return (
     <main className="page-shell">
       <section className="hero-card">
-        <div className="eyebrow">Semester fee template portal</div>
-        <h1>Download a template for your institution.</h1>
-        <p className="intro-text">
-          Enter the institution name and choose one or more semesters to generate a
-          polished spreadsheet template. The downloaded file includes validation for
-          PersonID, Epost, and the allowed semester values.
-        </p>
+        <div className="brand-bar">
+          <div className="brand-mark">
+            <img
+              src="/siologo.png"
+              alt="Studentsamskipnaden SiO"
+              className="brand-logo"
+              width="280"
+              height="56"
+            />
 
-        <div className="form-panel">
-          <label className="field-label" htmlFor="schoolName">
-            Name of institution
-          </label>
-          <input
-            id="schoolName"
-            name="schoolName"
-            type="text"
-            className="school-input"
-            placeholder="Example: Northbridge Business School"
-            value={schoolName}
-            onChange={(event) => setSchoolName(event.target.value)}
-          />
-
-          <div className="semester-group">
-            <p className="field-label">Semester(s)</p>
-            <div className="semester-options">
-              {SEMESTER_OPTIONS.map((semester) => (
-                <label key={semester} className="semester-option">
-                  <input
-                    type="checkbox"
-                    checked={selectedSemesters.includes(semester)}
-                    onChange={() => handleSemesterToggle(semester)}
-                  />
-                  <span>{semester}</span>
-                </label>
-              ))}
+            <div className="brand-copy">
+              <div className="eyebrow">Semester fee template portal</div>
+              <h1>Create an Excel template for your institution.</h1>
+              <p className="intro-text">
+                Enter the institution name, choose semester values, and generate an
+                Excel template to use to send student data to SiO.
+              </p>
             </div>
           </div>
+        </div>
 
-          <button
-            type="button"
-            className="download-button"
-            onClick={handleDownload}
-            disabled={isDownloading}
-          >
-            {isDownloading ? "Preparing file..." : "Download Template"}
-          </button>
-
-          <p className="validation-intro">
-            Before you send your Excel with data to SiO please validate the contents
-            and correct any errors discovered.
-          </p>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            className="file-input"
-            onChange={handleFileChange}
-          />
-
-          <button
-            type="button"
-            className="validate-button"
-            onClick={handleValidateClick}
-            disabled={isValidating}
-          >
-            {isValidating ? "Validating..." : "Validate Excel"}
-          </button>
-
-          {selectedFileName ? (
-            <p className="selected-file">Selected file: {selectedFileName}</p>
-          ) : null}
-
-          {error ? <p className="error-text">{error}</p> : null}
-          {validationError ? <p className="error-text">{validationError}</p> : null}
-
-          {validationResult ? (
-            <section className="validation-results" aria-live="polite">
-              <h2>
-                {validationResult.isValid
-                  ? "Validation passed"
-                  : "Validation found issues"}
-              </h2>
-              <p className="validation-summary">
-                Checked {validationResult.summary.rowCount} data row
-                {validationResult.summary.rowCount === 1 ? "" : "s"} using semester
-                values {validationResult.semesters.join(", ")}.
+        <div className="portal-sections">
+          <section className="form-panel">
+            <div className="panel-header">
+              <h2 className="panel-title">1. Download template</h2>
+              <p className="panel-text">
+                Enter the institution details and choose the semester values that
+                should be allowed in the Excel template.
               </p>
+            </div>
 
-              {validationResult.warnings?.length ? (
-                <div className="validation-block">
-                  <h3>Warnings</h3>
-                  <ul className="validation-list">
-                    {validationResult.warnings.map((warning) => (
-                      <li key={warning}>{warning}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
+            <label className="field-label" htmlFor="schoolName">
+              Name of institution
+            </label>
+            <input
+              id="schoolName"
+              name="schoolName"
+              type="text"
+              className="school-input"
+              placeholder="Example: University of Oslo"
+              value={schoolName}
+              onChange={(event) => setSchoolName(event.target.value)}
+            />
 
-              {validationResult.errors?.length ? (
-                <div className="validation-block">
-                  <h3>Errors</h3>
-                  <ul className="validation-list">
-                    {validationResult.errors.map((item, index) => (
-                      <li key={`${item.rowNumber ?? "general"}-${item.column ?? "file"}-${index}`}>
-                        {item.rowNumber ? `Row ${item.rowNumber}` : "Workbook"}
-                        {item.column ? ` (${item.column})` : ""}: {item.message}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <p className="success-text">
-                  No validation errors were found in the uploaded workbook.
+            <div className="semester-group">
+              <p className="field-label">Semester(s)</p>
+              <div className="semester-options">
+                {SEMESTER_OPTIONS.map((semester) => (
+                  <label key={semester} className="semester-option">
+                    <input
+                      type="checkbox"
+                      checked={selectedSemesters.includes(semester)}
+                      onChange={() => handleSemesterToggle(semester)}
+                    />
+                    <span>{semester}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="download-button"
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              {isDownloading ? "Preparing file..." : "Download Template"}
+            </button>
+
+            {error ? <p className="error-text">{error}</p> : null}
+          </section>
+
+          <section className="form-panel validation-panel">
+            <div className="panel-header">
+              <h2 className="panel-title">2. Validate workbook</h2>
+            </div>
+
+            <p className="validation-intro">
+              Before you send your Excel with data to SiO please validate the contents
+              and correct any errors discovered.
+            </p>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              className="file-input"
+              onChange={handleFileChange}
+            />
+
+            <button
+              type="button"
+              className="validate-button"
+              onClick={handleValidateClick}
+              disabled={isValidating}
+            >
+              {isValidating ? "Validating..." : "Validate Excel"}
+            </button>
+
+            {selectedFileName ? (
+              <p className="selected-file">Selected file: {selectedFileName}</p>
+            ) : null}
+
+            {validationError ? <p className="error-text">{validationError}</p> : null}
+
+            {validationResult ? (
+              <section className="validation-results" aria-live="polite">
+                <h2>
+                  {validationResult.isValid
+                    ? "Validation passed"
+                    : "Validation found issues"}
+                </h2>
+                <p className="validation-summary">
+                  Checked {validationResult.summary.rowCount} data row
+                  {validationResult.summary.rowCount === 1 ? "" : "s"} using semester
+                  values {validationResult.semesters.join(", ")}.
                 </p>
-              )}
-            </section>
-          ) : null}
+
+                {validationResult.warnings?.length ? (
+                  <div className="validation-block">
+                    <h3>Warnings</h3>
+                    <ul className="validation-list">
+                      {validationResult.warnings.map((warning) => (
+                        <li key={warning}>{warning}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                {validationResult.errors?.length ? (
+                  <div className="validation-block">
+                    <h3>Errors</h3>
+                    <ul className="validation-list">
+                      {validationResult.errors.map((item, index) => (
+                        <li key={`${item.rowNumber ?? "general"}-${item.column ?? "file"}-${index}`}>
+                          {item.rowNumber ? `Row ${item.rowNumber}` : "Workbook"}
+                          {item.column ? ` (${item.column})` : ""}: {item.message}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="success-text">
+                    No validation errors were found in the uploaded workbook.
+                  </p>
+                )}
+              </section>
+            ) : null}
+          </section>
         </div>
 
         <a className="whatido-link" href="/WHATIDO.md" target="_blank" rel="noreferrer">

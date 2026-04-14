@@ -1,0 +1,7 @@
+<svg width="280" height="56" viewBox="0 0 280 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="280" height="56" rx="18" fill="#F4F7F8"/>
+  <circle cx="28" cy="28" r="16" fill="#0B5FFF"/>
+  <path d="M23 24.4C23 22.191 24.791 20.4 27 20.4H29.6C31.8091 20.4 33.6 22.191 33.6 24.4V31.6C33.6 33.8091 31.8091 35.6 29.6 35.6H27C24.791 35.6 23 33.8091 23 31.6V29.8H27V31.2H29.6V24.8H27V26.2H23V24.4Z" fill="white"/>
+  <text x="53" y="22" fill="#5A667A" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="1.6">STUDENTSAMSKIPNADEN</text>
+  <text x="53" y="40" fill="#132033" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">SiO</text>
+</svg>
