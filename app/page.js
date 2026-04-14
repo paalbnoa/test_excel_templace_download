@@ -4,6 +4,52 @@ import { useRef, useState } from "react";
 
 const SEMESTER_OPTIONS = ["2025H", "2026V", "2026H"];
 
+function buildValidationDetailsText(validationResult) {
+  const lines = [
+    "Validation details",
+    "",
+    `Validation status: ${validationResult.isValid ? "Passed" : "Failed"}`,
+    `Rows checked: ${validationResult.summary.rowCount}`,
+    `Error count: ${validationResult.summary.errorCount}`,
+    `Warning count: ${validationResult.summary.warningCount}`,
+    `Allowed semesters: ${validationResult.semesters.join(", ") || "None"}`,
+    ""
+  ];
+
+  if (validationResult.warnings?.length) {
+    lines.push("Warnings:");
+    validationResult.warnings.forEach((warning) => {
+      lines.push(`- ${warning}`);
+    });
+    lines.push("");
+  }
+
+  if (validationResult.errors?.length) {
+    lines.push("Errors:");
+    validationResult.errors.forEach((item) => {
+      const rowLabel = item.rowNumber ? `Row ${item.rowNumber}` : "Workbook";
+      const columnLabel = item.column ? ` (${item.column})` : "";
+      lines.push(`- ${rowLabel}${columnLabel}: ${item.message}`);
+    });
+  }
+
+  return lines.join("\n");
+}
+
+function buildValidationDetailsHref(validationResult) {
+  return `data:text/plain;charset=utf-8,${encodeURIComponent(
+    buildValidationDetailsText(validationResult)
+  )}`;
+}
+
+function buildHighlightedWorkbookHref(validationResult) {
+  if (!validationResult.highlightedWorkbook) {
+    return "";
+  }
+
+  return `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${validationResult.highlightedWorkbook}`;
+}
+
 export default function HomePage() {
   const [schoolName, setSchoolName] = useState("");
   const [selectedSemesters, setSelectedSemesters] = useState([]);
@@ -251,15 +297,28 @@ export default function HomePage() {
 
                 {validationResult.errors?.length ? (
                   <div className="validation-block">
-                    <h3>Errors</h3>
-                    <ul className="validation-list">
-                      {validationResult.errors.map((item, index) => (
-                        <li key={`${item.rowNumber ?? "general"}-${item.column ?? "file"}-${index}`}>
-                          {item.rowNumber ? `Row ${item.rowNumber}` : "Workbook"}
-                          {item.column ? ` (${item.column})` : ""}: {item.message}
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="validation-compact-summary">
+                      Validation found {validationResult.summary.errorCount} error
+                      {validationResult.summary.errorCount === 1 ? "" : "s"}.
+                    </p>
+                    <a
+                      className="validation-details-link"
+                      href={buildValidationDetailsHref(validationResult)}
+                      download={`${selectedFileName.replace(/\.xlsx$/i, "") || "validation"}-details.txt`}
+                    >
+                      Download full validation details
+                    </a>
+                    {validationResult.highlightedWorkbook ? (
+                      <a
+                        className="validation-details-link highlighted-workbook-link"
+                        href={buildHighlightedWorkbookHref(validationResult)}
+                        download={`${
+                          selectedFileName.replace(/\.xlsx$/i, "") || "validation"
+                        }-highlighted-errors.xlsx`}
+                      >
+                        Download Excel file with highlighted errors
+                      </a>
+                    ) : null}
                   </div>
                 ) : (
                   <p className="success-text">

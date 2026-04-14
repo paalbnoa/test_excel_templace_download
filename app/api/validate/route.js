@@ -1,4 +1,7 @@
-import { validateWorkbookBuffer } from "../../../lib/template";
+import {
+  buildHighlightedWorkbookBuffer,
+  validateWorkbookBuffer
+} from "../../../lib/template";
 
 export async function POST(request) {
   try {
@@ -26,6 +29,20 @@ export async function POST(request) {
 
     const arrayBuffer = await uploadedFile.arrayBuffer();
     const result = await validateWorkbookBuffer(arrayBuffer);
+    const hasRowLevelErrors =
+      result.summary.rowCount > 0 &&
+      result.errors?.some((item) => item.rowNumber && item.column);
+
+    if (hasRowLevelErrors) {
+      const highlightedBuffer = await buildHighlightedWorkbookBuffer(
+        arrayBuffer,
+        result.errors
+      );
+
+      if (highlightedBuffer) {
+        result.highlightedWorkbook = Buffer.from(highlightedBuffer).toString("base64");
+      }
+    }
 
     return Response.json(result, { status: 200 });
   } catch {
