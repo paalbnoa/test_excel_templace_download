@@ -53,6 +53,7 @@ function buildHighlightedWorkbookHref(validationResult) {
 export default function HomePage() {
   const [schoolName, setSchoolName] = useState("");
   const [selectedSemesters, setSelectedSemesters] = useState([]);
+  const [includeTestData, setIncludeTestData] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -93,7 +94,8 @@ export default function HomePage() {
         },
         body: JSON.stringify({
           schoolName: trimmedSchoolName,
-          semesters: selectedSemesters
+          semesters: selectedSemesters,
+          includeTestData
         })
       });
 
@@ -224,6 +226,17 @@ export default function HomePage() {
                   </label>
                 ))}
               </div>
+            </div>
+
+            <div className="download-option-group">
+              <label className="download-option">
+                <input
+                  type="checkbox"
+                  checked={includeTestData}
+                  onChange={(event) => setIncludeTestData(event.target.checked)}
+                />
+                <span>Include 100 rows of test data</span>
+              </label>
             </div>
 
             <button

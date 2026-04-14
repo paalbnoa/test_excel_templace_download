@@ -2,7 +2,7 @@ import { buildWorkbook, SEMESTER_OPTIONS } from "../../../lib/template";
 
 export async function POST(request) {
   try {
-    const { schoolName, semesters } = await request.json();
+    const { schoolName, semesters, includeTestData } = await request.json();
 
     if (!schoolName || typeof schoolName !== "string" || !schoolName.trim()) {
       return Response.json(
@@ -22,7 +22,9 @@ export async function POST(request) {
       );
     }
 
-    const workbook = await buildWorkbook(schoolName.trim(), semesters);
+    const workbook = await buildWorkbook(schoolName.trim(), semesters, {
+      includeTestData: Boolean(includeTestData)
+    });
     const buffer = await workbook.xlsx.writeBuffer();
     const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.xlsx`;
 
