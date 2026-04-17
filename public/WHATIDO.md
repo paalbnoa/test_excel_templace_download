@@ -5,9 +5,10 @@ This application is a small portal for institutions that need to prepare and val
 ## Main Flow
 
 1. The user opens the portal.
-2. The portal is divided into two main areas:
-   - Left side: download a template
-   - Right side: validate a completed workbook
+2. The portal is divided into three sections arranged in a left-to-right flow:
+   - Section 1: download a template
+   - Section 2: validate a completed workbook
+   - Section 3: send the validated workbook to SiO by email
 
 ## Download Template
 
@@ -60,6 +61,12 @@ This application is a small portal for institutions that need to prepare and val
    - How many rows were checked
    - How many warnings and errors were found
 
+## Send To SiO
+
+1. After the workbook validates successfully, the portal instructs the user to send the Excel file to SiO.
+2. The file should be attached to an email sent to `semester_fees@sio.no`.
+3. This is presented as the third and final step in the portal flow.
+
 ## Error Output
 
 1. If validation fails, the portal does not show the full row-by-row error list directly on the page.
@@ -78,4 +85,4 @@ This application is a small portal for institutions that need to prepare and val
 - Validation upload API: `app/api/validate/route.js`
 - Excel generation, validation, and annotated workbook logic: `lib/template.js`
 
-In short: the app helps an institution download a controlled Excel template, fill it in, validate the uploaded data, and if needed download both a detailed error report and an Excel copy with invalid cells highlighted.
+In short: the app helps an institution download a controlled Excel template, fill it in, validate the uploaded data, and then send the validated workbook to SiO. If validation fails, the app also provides a detailed error report and, when relevant, an Excel copy with invalid cells highlighted.

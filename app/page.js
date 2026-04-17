@@ -172,7 +172,7 @@ export default function HomePage() {
 
             <div className="brand-copy">
               <div className="eyebrow">Semester fee template portal</div>
-              <h1>Create an Excel template for your institution.</h1>
+              <h1>Download an Excel template for your institution.</h1>
               <p className="intro-text">
                 Enter the institution short name, choose a semester, and generate an
                 Excel template to use to send student data to SiO.
@@ -181,7 +181,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="portal-sections">
+        <div className="portal-sections" aria-label="Portal workflow">
           <section className="form-panel">
             <div className="panel-header">
               <h2 className="panel-title">1. Download template</h2>
@@ -252,6 +252,11 @@ export default function HomePage() {
 
             {error ? <p className="error-text">{error}</p> : null}
           </section>
+
+          <div className="flow-arrow" aria-hidden="true">
+            <span className="flow-arrow-line" />
+            <span className="flow-arrow-head" />
+          </div>
 
           <section className="form-panel validation-panel">
             <div className="panel-header">
@@ -341,6 +346,25 @@ export default function HomePage() {
                 )}
               </section>
             ) : null}
+          </section>
+
+          <div className="flow-arrow" aria-hidden="true">
+            <span className="flow-arrow-line" />
+            <span className="flow-arrow-head" />
+          </div>
+
+          <section className="form-panel send-panel">
+            <div className="panel-header">
+              <h2 className="panel-title">3. Send to SiO</h2>
+              <p className="panel-text">
+                After the Excel has validated ok, please send it to SiO as an
+                attachment to an email to{" "}
+                <a className="email-link" href="mailto:semester_fees@sio.no">
+                  semester_fees@sio.no
+                </a>
+                .
+              </p>
+            </div>
           </section>
         </div>
 
