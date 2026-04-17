@@ -34,7 +34,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -177,6 +178,23 @@ input {
   margin-top: 20px;
 }
 
+.semester-select {
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid rgba(19, 32, 51, 0.12);
+  border-radius: 16px;
+  background: linear-gradient(180deg, white, rgba(243, 247, 248, 0.9));
+  color: var(--text-primary);
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.semester-select:focus {
+  outline: none;
+  border-color: rgba(11, 95, 255, 0.4);
+  box-shadow: 0 0 0 4px rgba(11, 95, 255, 0.12);
+  transform: translateY(-1px);
+}
+
 .download-option-group {
   margin-top: 20px;
 }
@@ -193,25 +211,6 @@ input {
 }
 
 .download-option input {
-  accent-color: var(--accent);
-}
-
-.semester-options {
-  display: grid;
-  gap: 10px;
-}
-
-.semester-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border: 1px solid rgba(19, 32, 51, 0.12);
-  border-radius: 16px;
-  background: linear-gradient(180deg, white, rgba(243, 247, 248, 0.9));
-}
-
-.semester-option input {
   accent-color: var(--accent);
 }
 

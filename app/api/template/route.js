@@ -6,18 +6,18 @@ export async function POST(request) {
 
     if (!schoolName || typeof schoolName !== "string" || !schoolName.trim()) {
       return Response.json(
-        { error: "A valid institution name is required." },
+        { error: "A valid institution short name is required." },
         { status: 400 }
       );
     }
 
     if (
       !Array.isArray(semesters) ||
-      semesters.length === 0 ||
+      semesters.length !== 1 ||
       semesters.some((semester) => !SEMESTER_OPTIONS.includes(semester))
     ) {
       return Response.json(
-        { error: "At least one valid semester is required." },
+        { error: "Exactly one valid semester is required." },
         { status: 400 }
       );
     }

@@ -52,7 +52,7 @@ function buildHighlightedWorkbookHref(validationResult) {
 
 export default function HomePage() {
   const [schoolName, setSchoolName] = useState("");
-  const [selectedSemesters, setSelectedSemesters] = useState([]);
+  const [selectedSemester, setSelectedSemester] = useState("");
   const [includeTestData, setIncludeTestData] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState("");
@@ -62,24 +62,16 @@ export default function HomePage() {
   const [validationResult, setValidationResult] = useState(null);
   const fileInputRef = useRef(null);
 
-  function handleSemesterToggle(semester) {
-    setSelectedSemesters((currentSemesters) =>
-      currentSemesters.includes(semester)
-        ? currentSemesters.filter((value) => value !== semester)
-        : [...currentSemesters, semester]
-    );
-  }
-
   async function handleDownload() {
     const trimmedSchoolName = schoolName.trim();
 
     if (!trimmedSchoolName) {
-      setError("Please enter the name of an institution before downloading the template.");
+      setError("Please enter the institution short name before downloading the template.");
       return;
     }
 
-    if (selectedSemesters.length === 0) {
-      setError("Please select at least one semester before downloading the template.");
+    if (!selectedSemester) {
+      setError("Please select a semester before downloading the template.");
       return;
     }
 
@@ -94,7 +86,7 @@ export default function HomePage() {
         },
         body: JSON.stringify({
           schoolName: trimmedSchoolName,
-          semesters: selectedSemesters,
+          semesters: [selectedSemester],
           includeTestData
         })
       });
@@ -182,7 +174,7 @@ export default function HomePage() {
               <div className="eyebrow">Semester fee template portal</div>
               <h1>Create an Excel template for your institution.</h1>
               <p className="intro-text">
-                Enter the institution name, choose semester values, and generate an
+                Enter the institution short name, choose a semester, and generate an
                 Excel template to use to send student data to SiO.
               </p>
             </div>
@@ -194,38 +186,48 @@ export default function HomePage() {
             <div className="panel-header">
               <h2 className="panel-title">1. Download template</h2>
               <p className="panel-text">
-                Enter the institution details and choose the semester values that
+                Enter the institution short name and choose the semester value that
                 should be allowed in the Excel template.
               </p>
             </div>
 
             <label className="field-label" htmlFor="schoolName">
-              Name of institution
+              Institution short name
             </label>
             <input
               id="schoolName"
               name="schoolName"
               type="text"
               className="school-input"
-              placeholder="Example: University of Oslo"
+              placeholder="Example: UiO"
               value={schoolName}
-              onChange={(event) => setSchoolName(event.target.value)}
+              onChange={(event) => {
+                setSchoolName(event.target.value);
+                setError("");
+              }}
             />
 
             <div className="semester-group">
-              <p className="field-label">Semester(s)</p>
-              <div className="semester-options">
+              <label className="field-label" htmlFor="semester">
+                Semester fee
+              </label>
+              <select
+                id="semester"
+                name="semester"
+                className="semester-select"
+                value={selectedSemester}
+                onChange={(event) => {
+                  setSelectedSemester(event.target.value);
+                  setError("");
+                }}
+              >
+                <option value="">Select semester</option>
                 {SEMESTER_OPTIONS.map((semester) => (
-                  <label key={semester} className="semester-option">
-                    <input
-                      type="checkbox"
-                      checked={selectedSemesters.includes(semester)}
-                      onChange={() => handleSemesterToggle(semester)}
-                    />
-                    <span>{semester}</span>
-                  </label>
+                  <option key={semester} value={semester}>
+                    {semester}
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
             <div className="download-option-group">
@@ -293,8 +295,7 @@ export default function HomePage() {
                 </h2>
                 <p className="validation-summary">
                   Checked {validationResult.summary.rowCount} data row
-                  {validationResult.summary.rowCount === 1 ? "" : "s"} using semester
-                  values {validationResult.semesters.join(", ")}.
+                  {validationResult.summary.rowCount === 1 ? "" : "s"}.
                 </p>
 
                 {validationResult.warnings?.length ? (

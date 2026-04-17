@@ -11,16 +11,16 @@ This application is a small portal for institutions that need to prepare and val
 
 ## Download Template
 
-1. The user enters the institution name.
-2. The user selects one or more allowed semesters from the preset list: `2025H`, `2026V`, `2026H`.
+1. The user enters the institution short name.
+2. The user selects exactly one semester from the preset list: `2025H`, `2026V`, `2026H`.
 3. The user can optionally choose to include test data in the Excel file before downloading it.
 4. When the user clicks `Download Template`, the browser sends the request to `/api/template`.
 5. The server generates a new `.xlsx` workbook using `ExcelJS`.
-5. The workbook includes:
+6. The workbook includes:
    - A `Students` sheet
    - An `Instructions` sheet
-   - The institution name in the sheet metadata
-   - The selected semesters in the sheet metadata
+   - The institution short name in the sheet metadata
+   - The selected semester in the sheet metadata
    - 100 ready-to-fill table rows
    - Optional sample/test data if the user selected that option
 6. If test data is included, the workbook is prefilled with 100 rows of valid sample data that matches the validation rules.
@@ -28,20 +28,20 @@ This application is a small portal for institutions that need to prepare and val
    - `PersonID`
    - `Fornavn`
    - `Etternavn`
-   - `Sist.bet.sem.avg`
    - `Fritatt.sem.avg`
    - `Epost`
    - `Prefiks`
    - `Mobilnummer`
-8. Excel validation rules are built into the template so the sheet itself helps prevent bad input:
-   - `PersonID` must be whole numbers
-   - `Fornavn` is required
-   - `Etternavn` is required
-   - `Sist.bet.sem.avg` must match one of the selected semesters
+8. The selected semester is shown above the table in the workbook metadata and is not part of the table itself.
+9. Excel validation rules are built into the template so the sheet itself helps prevent bad input:
+   - `PersonID` must contain exactly 11 digits
+   - `Fornavn` is required and must contain letters only
+   - `Etternavn` is required and must contain letters only, with no special characters
+   - `Fritatt.sem.avg` is a text field and may be blank, or contain only `Ja` or `Nei`
    - `Epost` must look like a valid email address
-   - `Prefiks` is required
-   - `Mobilnummer` must be an 8-digit Norwegian mobile number starting with `4` or `9`
-9. The generated workbook is returned to the browser and downloaded as an `.xlsx` file.
+   - `Prefiks` must start with `+`, followed by digits only, with no spaces, and `00` is not allowed
+   - `Mobilnummer` must contain exactly 8 digits with no spaces
+10. The generated workbook is returned to the browser and downloaded as an `.xlsx` file.
 
 ## Validate Workbook
 
@@ -51,8 +51,9 @@ This application is a small portal for institutions that need to prepare and val
 4. The server opens the workbook and checks:
    - That a worksheet exists
    - That the expected headers are present
+   - That the semester metadata can be read from the workbook
    - That only rows with actual data are validated
-   - That each populated row follows the required rules
+   - That each populated row follows the required rules for names, exemption value, email, prefix, phone number, and `PersonID`
 5. If the uploaded file contains no actual data rows, that is treated as a validation error.
 6. The portal shows a validation summary on screen:
    - Whether validation passed or failed
