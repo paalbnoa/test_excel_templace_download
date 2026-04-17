@@ -292,8 +292,13 @@ export default function HomePage() {
             {validationError ? <p className="error-text">{validationError}</p> : null}
 
             {validationResult ? (
-              <section className="validation-results" aria-live="polite">
-                <h2>
+              <section
+                className={`validation-results ${
+                  validationResult.isValid ? "validation-results-success" : "validation-results-error"
+                }`}
+                aria-live="polite"
+              >
+                <h2 className={validationResult.isValid ? "" : "validation-error-heading"}>
                   {validationResult.isValid
                     ? "Validation passed"
                     : "Validation found issues"}
@@ -316,7 +321,7 @@ export default function HomePage() {
 
                 {validationResult.errors?.length ? (
                   <div className="validation-block">
-                    <p className="validation-compact-summary">
+                    <p className="validation-compact-summary validation-error-summary">
                       Validation found {validationResult.summary.errorCount} error
                       {validationResult.summary.errorCount === 1 ? "" : "s"}.
                     </p>
