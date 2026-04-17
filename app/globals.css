@@ -47,6 +47,7 @@ select {
 }
 
 .hero-card {
+  position: relative;
   width: min(100%, 1180px);
   padding: 44px;
   border-radius: 32px;
@@ -56,9 +57,20 @@ select {
   backdrop-filter: blur(16px);
 }
 
+.hero-stamp {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: clamp(100px, 13vw, 180px);
+  height: auto;
+  pointer-events: none;
+  opacity: 0.92;
+}
+
 .brand-bar {
   display: grid;
   gap: 28px;
+  padding-right: clamp(96px, 15vw, 210px);
 }
 
 .brand-mark {
@@ -433,6 +445,17 @@ select {
   .hero-card {
     padding: 28px 22px;
     border-radius: 24px;
+  }
+
+  .hero-stamp {
+    top: 16px;
+    right: 16px;
+    width: 88px;
+  }
+
+  .brand-bar {
+    padding-right: 0;
+    padding-top: 72px;
   }
 
   .brand-logo {

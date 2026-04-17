@@ -160,6 +160,15 @@ export default function HomePage() {
   return (
     <main className="page-shell">
       <section className="hero-card">
+        <img
+          src="/stamp.png"
+          alt=""
+          aria-hidden="true"
+          className="hero-stamp"
+          width="180"
+          height="180"
+        />
+
         <div className="brand-bar">
           <div className="brand-mark">
             <img
