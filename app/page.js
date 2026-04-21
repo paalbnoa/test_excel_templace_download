@@ -36,12 +36,6 @@ function buildValidationDetailsText(validationResult) {
   return lines.join("\n");
 }
 
-function buildValidationDetailsHref(validationResult) {
-  return `data:text/plain;charset=utf-8,${encodeURIComponent(
-    buildValidationDetailsText(validationResult)
-  )}`;
-}
-
 function buildHighlightedWorkbookHref(validationResult) {
   if (!validationResult.highlightedWorkbook) {
     return "";
@@ -54,6 +48,7 @@ export default function HomePage() {
   const [schoolName, setSchoolName] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
   const [includeTestData, setIncludeTestData] = useState(false);
+  const [includeRandomErrors, setIncludeRandomErrors] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -87,7 +82,8 @@ export default function HomePage() {
         body: JSON.stringify({
           schoolName: trimmedSchoolName,
           semesters: [selectedSemester],
-          includeTestData
+          includeTestData,
+          includeRandomErrors
         })
       });
 
@@ -155,6 +151,22 @@ export default function HomePage() {
       fileInputRef.current.value = "";
       fileInputRef.current.click();
     }
+  }
+
+  function handleOpenValidationDetails() {
+    if (!validationResult) {
+      return;
+    }
+
+    const detailsBlob = new Blob([buildValidationDetailsText(validationResult)], {
+      type: "text/plain;charset=utf-8"
+    });
+    const detailsUrl = window.URL.createObjectURL(detailsBlob);
+
+    window.open(detailsUrl, "_blank", "noopener,noreferrer");
+    window.setTimeout(() => {
+      window.URL.revokeObjectURL(detailsUrl);
+    }, 60000);
   }
 
   return (
@@ -244,9 +256,25 @@ export default function HomePage() {
                 <input
                   type="checkbox"
                   checked={includeTestData}
-                  onChange={(event) => setIncludeTestData(event.target.checked)}
+                  onChange={(event) => {
+                    const isChecked = event.target.checked;
+                    setIncludeTestData(isChecked);
+
+                    if (!isChecked) {
+                      setIncludeRandomErrors(false);
+                    }
+                  }}
                 />
                 <span>Include 100 rows of test data</span>
+              </label>
+              <label className="download-option">
+                <input
+                  type="checkbox"
+                  checked={includeRandomErrors}
+                  disabled={!includeTestData}
+                  onChange={(event) => setIncludeRandomErrors(event.target.checked)}
+                />
+                <span>Include random errors</span>
               </label>
             </div>
 
@@ -334,13 +362,13 @@ export default function HomePage() {
                       Validation found {validationResult.summary.errorCount} error
                       {validationResult.summary.errorCount === 1 ? "" : "s"}.
                     </p>
-                    <a
+                    <button
+                      type="button"
                       className="validation-details-link"
-                      href={buildValidationDetailsHref(validationResult)}
-                      download={`${selectedFileName.replace(/\.xlsx$/i, "") || "validation"}-details.txt`}
+                      onClick={handleOpenValidationDetails}
                     >
-                      Download full validation details
-                    </a>
+                      Open full validation details
+                    </button>
                     {validationResult.highlightedWorkbook ? (
                       <a
                         className="validation-details-link highlighted-workbook-link"

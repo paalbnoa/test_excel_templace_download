@@ -2,7 +2,8 @@ import { buildWorkbook, SEMESTER_OPTIONS } from "../../../lib/template";
 
 export async function POST(request) {
   try {
-    const { schoolName, semesters, includeTestData } = await request.json();
+    const { schoolName, semesters, includeTestData, includeRandomErrors } =
+      await request.json();
 
     if (!schoolName || typeof schoolName !== "string" || !schoolName.trim()) {
       return Response.json(
@@ -23,7 +24,8 @@ export async function POST(request) {
     }
 
     const workbook = await buildWorkbook(schoolName.trim(), semesters, {
-      includeTestData: Boolean(includeTestData)
+      includeTestData: Boolean(includeTestData),
+      includeRandomErrors: Boolean(includeTestData) && Boolean(includeRandomErrors)
     });
     const buffer = await workbook.xlsx.writeBuffer();
     const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.xlsx`;

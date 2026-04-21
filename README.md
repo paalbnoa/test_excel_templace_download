@@ -18,7 +18,8 @@ A small Next.js app that generates an Excel template for student data.
 
 - Professional landing page with a school-name input
 - Downloadable `.xlsx` template
-- 20 dummy rows plus 100 ready blank rows
+- Optional 100 rows of test data
+- Optional random validation errors and blank required cells for testing
 - Email validation in Excel
 - Separate school-name field above the table
 

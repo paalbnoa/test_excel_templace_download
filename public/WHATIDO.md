@@ -15,17 +15,18 @@ This application is a small portal for institutions that need to prepare and val
 1. The user enters the institution short name.
 2. The user selects exactly one semester from the preset list: `2025H`, `2026V`, `2026H`.
 3. The user can optionally choose to include test data in the Excel file before downloading it.
-4. When the user clicks `Download Template`, the browser sends the request to `/api/template`.
-5. The server generates a new `.xlsx` workbook using `ExcelJS`.
-6. The workbook includes:
+4. The user can also choose to include a few random validation errors and blank required cells in that test data for easier testing.
+5. When the user clicks `Download Template`, the browser sends the request to `/api/template`.
+6. The server generates a new `.xlsx` workbook using `ExcelJS`.
+7. The workbook includes:
    - A `Students` sheet
    - An `Instructions` sheet
    - The institution short name in the sheet metadata
    - The selected semester in the sheet metadata
    - 100 ready-to-fill table rows
    - Optional sample/test data if the user selected that option
-6. If test data is included, the workbook is prefilled with 100 rows of valid sample data that matches the validation rules.
-7. The `Students` sheet contains these columns:
+8. If test data is included, the workbook is prefilled with 100 rows of sample data that matches the validation rules unless the optional random-error setting intentionally changes a few cells.
+9. The `Students` sheet contains these columns:
    - `PersonID`
    - `Fornavn`
    - `Etternavn`

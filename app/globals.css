@@ -232,17 +232,20 @@ select {
 }
 
 .download-option-group {
+  display: grid;
+  gap: 10px;
   margin-top: 20px;
+  padding: 14px;
+  border: 1px solid rgba(19, 32, 51, 0.12);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(243, 247, 248, 0.92));
 }
 
 .download-option {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 14px;
-  border: 1px solid rgba(19, 32, 51, 0.12);
-  border-radius: 16px;
-  background: linear-gradient(180deg, white, rgba(243, 247, 248, 0.9));
+  padding: 6px 4px;
   color: var(--text-primary);
 }
 
@@ -250,6 +253,13 @@ select {
   accent-color: var(--accent);
 }
 
+.download-option input:disabled {
+  cursor: not-allowed;
+}
+
+.download-option:has(input:disabled) {
+  opacity: 0.58;
+}
 .download-button {
   margin-top: 18px;
   padding: 15px 22px;
@@ -377,8 +387,12 @@ select {
 .validation-details-link {
   display: inline-flex;
   margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--accent-hover);
   font-weight: 700;
+  cursor: pointer;
   text-decoration: none;
   border-bottom: 1px solid rgba(11, 95, 255, 0.28);
 }
