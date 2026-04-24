@@ -169,6 +169,14 @@ export default function HomePage() {
     }, 60000);
   }
 
+  function handleOpenAutomationTool() {
+    if (!validationResult?.isValid) {
+      return;
+    }
+
+    window.alert("Pretend the user is redirected to the automation tool");
+  }
+
   return (
     <main className="page-shell">
       <section className="hero-card">
@@ -399,13 +407,16 @@ export default function HomePage() {
             <div className="panel-header">
               <h2 className="panel-title">3. Send to SiO</h2>
               <p className="panel-text">
-                After the Excel has validated ok, please send it to SiO as an
-                attachment to an email to{" "}
-                <a className="email-link" href="mailto:semester_fees@sio.no">
-                  semester_fees@sio.no
-                </a>
-                .
+                Upload the Excel to SiO by using the Automation tool.
               </p>
+              <button
+                type="button"
+                className="automation-button"
+                onClick={handleOpenAutomationTool}
+                disabled={!validationResult?.isValid}
+              >
+                Open automation tool
+              </button>
             </div>
           </section>
         </div>
