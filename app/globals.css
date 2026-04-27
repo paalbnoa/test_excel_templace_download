@@ -104,6 +104,12 @@ select {
   border-color: rgba(11, 95, 255, 0.55);
 }
 
+.build-number {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #9aa5b4;
+}
+
 .eyebrow {
   display: inline-flex;
   padding: 8px 14px;

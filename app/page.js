@@ -424,6 +424,7 @@ export default function HomePage() {
         <a className="whatido-link" href="/WHATIDO.md" target="_blank" rel="noreferrer">
           Read a step-by-step description of what this application does
         </a>
+        <p className="build-number">Build {process.env.NEXT_PUBLIC_BUILD_NUMBER}</p>
       </section>
     </main>
   );
