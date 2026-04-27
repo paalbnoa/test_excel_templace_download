@@ -97,7 +97,7 @@ export default function HomePage() {
       const safeName = trimmedSchoolName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
       link.href = url;
-      link.download = `${safeName || "school"}-template.xlsx`;
+      link.download = `${safeName || "school"}-template.xlsm`;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -316,7 +316,7 @@ export default function HomePage() {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12"
               className="file-input"
               onChange={handleFileChange}
             />

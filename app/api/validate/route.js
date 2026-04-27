@@ -15,14 +15,17 @@ export async function POST(request) {
       );
     }
 
+    const normalizedFileName = uploadedFile.name.toLowerCase();
     const isExcelFile =
-      uploadedFile.name.toLowerCase().endsWith(".xlsx") ||
+      normalizedFileName.endsWith(".xlsx") ||
+      normalizedFileName.endsWith(".xlsm") ||
       uploadedFile.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+      uploadedFile.type === "application/vnd.ms-excel.sheet.macroEnabled.12";
 
     if (!isExcelFile) {
       return Response.json(
-        { error: "Only .xlsx files are supported." },
+        { error: "Only .xlsx and .xlsm files are supported." },
         { status: 400 }
       );
     }

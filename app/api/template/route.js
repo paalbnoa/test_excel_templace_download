@@ -1,4 +1,9 @@
 import { buildWorkbook, SEMESTER_OPTIONS } from "../../../lib/template";
+import {
+  addMacroButtonToWorkbookBuffer,
+  MACRO_ENABLED_CONTENT_TYPE,
+  MACRO_ENABLED_EXTENSION
+} from "../../../lib/macro-workbook";
 
 export async function POST(request) {
   try {
@@ -27,18 +32,20 @@ export async function POST(request) {
       includeTestData: Boolean(includeTestData),
       includeRandomErrors: Boolean(includeTestData) && Boolean(includeRandomErrors)
     });
-    const buffer = await workbook.xlsx.writeBuffer();
-    const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.xlsx`;
+    const workbookBuffer = await workbook.xlsx.writeBuffer();
+    const buffer = await addMacroButtonToWorkbookBuffer(workbookBuffer);
+    const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.${MACRO_ENABLED_EXTENSION}`;
 
     return new Response(buffer, {
       status: 200,
       headers: {
-        "Content-Type":
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Type": MACRO_ENABLED_CONTENT_TYPE,
         "Content-Disposition": `attachment; filename="${filename}"`
       }
     });
-  } catch {
+  } catch (error) {
+    console.error("Template generation failed", error);
+
     return Response.json(
       { error: "Unable to generate template." },
       { status: 500 }

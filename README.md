@@ -3,7 +3,7 @@
 A small Next.js app that generates an Excel template to use for importing of student data and semester fees. Used as a proof of concept in the SiO-Hackathon 2026.
 
 ## Note to self:
-- available at https://test-excel-templace-download.vercel.app/
+- available at https://hackaton26-excel-templace-download-poc.vercel.app/
 - used Codex to prompt the whole thing
 - installed GIT locally
 - created repo on GITHUB

@@ -1,1 +1,1 @@
-Comments
+Change step 3 to say that the files should be uploaded in the automation tool.
