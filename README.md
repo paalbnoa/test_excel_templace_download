@@ -1,6 +1,6 @@
-# Excel Template Portal
+# Excel Semester fee template portal
 
-A small Next.js app that generates an Excel template for student data.
+A small Next.js app that generates an Excel template to use for importing of student data and semester fees. Used as a proof of concept in the SiO-Hackathon 2026.
 
 ## Note to self:
 - available at https://test-excel-templace-download.vercel.app/
