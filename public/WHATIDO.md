@@ -66,9 +66,8 @@ This application is a small portal for institutions that need to prepare and val
 
 ## Send To SiO
 
-1. After the workbook validates successfully, the portal instructs the user to send the Excel file to SiO.
-2. The file should be attached to an email sent to `semester_fees@sio.no`.
-3. This is presented as the third and final step in the portal flow.
+1. After the workbook validates successfully, the portal instructs the user to use the automation tool to send to SiO.
+2. This is presented as the third and final step in the portal flow.
 
 ## Error Output
 

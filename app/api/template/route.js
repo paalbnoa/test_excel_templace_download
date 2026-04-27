@@ -1,4 +1,4 @@
-import { buildWorkbook, SEMESTER_OPTIONS } from "../../../lib/template";
+import { buildWorkbook, getHeaderNotes, SEMESTER_OPTIONS } from "../../../lib/template";
 import {
   addMacroButtonToWorkbookBuffer,
   MACRO_ENABLED_CONTENT_TYPE,
@@ -33,7 +33,7 @@ export async function POST(request) {
       includeRandomErrors: Boolean(includeTestData) && Boolean(includeRandomErrors)
     });
     const workbookBuffer = await workbook.xlsx.writeBuffer();
-    const buffer = await addMacroButtonToWorkbookBuffer(workbookBuffer);
+    const buffer = await addMacroButtonToWorkbookBuffer(workbookBuffer, { notes: getHeaderNotes() });
     const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.${MACRO_ENABLED_EXTENSION}`;
 
     return new Response(buffer, {
