@@ -221,29 +221,31 @@ export default function HomePage() {
 
   return (
     <main className="page-shell">
-      <section className="hero-card">
+      <header className="top-banner" aria-label="SiO">
         <img
-          src="/stamp.png"
-          alt=""
-          aria-hidden="true"
-          className="hero-stamp"
-          width="180"
-          height="180"
+          src="/siologo.png"
+          alt="Studentsamskipnaden SiO"
+          className="top-banner-logo"
+          width="280"
+          height="56"
         />
+      </header>
 
+      <section className="hero-card">
         <div className="brand-bar">
           <div className="brand-mark">
-            <img
-              src="/siologo.png"
-              alt="Studentsamskipnaden SiO"
-              className="brand-logo"
-              width="280"
-              height="56"
-            />
-
             <div className="brand-copy">
-              <div className="eyebrow">Semester fee template portal</div>
-              <h1>Download an Excel template for your institution.</h1>
+              <div className="hero-heading-row">
+                <h1>Download an Excel template for your institution.</h1>
+                <img
+                  src="/stamp.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="hero-heading-stamp"
+                  width="180"
+                  height="180"
+                />
+              </div>
               <p className="intro-text">
                 Enter the institution short name, choose a semester, and generate an
                 Excel template to use to send student data to SiO.
