@@ -63,7 +63,8 @@ select {
 
 .top-banner-logo {
   display: block;
-  width: clamp(150px, 20vw, 240px);
+  width: 114px;
+  max-width: 100%;
   height: auto;
 }
 
@@ -543,7 +544,7 @@ select {
   }
 
   .top-banner-logo {
-    width: 138px;
+    width: 114px;
   }
 
   .hero-card {

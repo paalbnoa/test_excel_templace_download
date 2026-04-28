@@ -223,7 +223,7 @@ export default function HomePage() {
     <main className="page-shell">
       <header className="top-banner" aria-label="SiO">
         <img
-          src="/siologo.png"
+          src="/sio_logo.avif"
           alt="Studentsamskipnaden SiO"
           className="top-banner-logo"
           width="280"
