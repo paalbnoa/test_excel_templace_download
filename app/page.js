@@ -263,15 +263,6 @@ export default function HomePage() {
             </div>
 
             <div className="download-option-group">
-              <label className="download-option">
-                <input
-                  type="checkbox"
-                  checked={includeMacros}
-                  onChange={(event) => setIncludeMacros(event.target.checked)}
-                />
-                <span>Include macros</span>
-              </label>
-
               <p className="download-option-title">For testing purposes</p>
               <label className="download-option">
                 <input
@@ -296,6 +287,15 @@ export default function HomePage() {
                   onChange={(event) => setIncludeRandomErrors(event.target.checked)}
                 />
                 <span>Include random errors</span>
+              </label>
+
+              <label className="download-option">
+                <input
+                  type="checkbox"
+                  checked={includeMacros}
+                  onChange={(event) => setIncludeMacros(event.target.checked)}
+                />
+                <span>Include macros</span>
               </label>
             </div>
 
