@@ -280,22 +280,24 @@ select {
   opacity: 0.58;
 }
 .download-button {
+  width: 100%;
   margin-top: 18px;
   padding: 15px 22px;
   border: 0;
   border-radius: 16px;
-  background: linear-gradient(135deg, var(--accent), #4182ff);
+  background: #161822;
   color: white;
   font-weight: 700;
   text-transform: capitalize;
   cursor: pointer;
   transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
-  box-shadow: 0 18px 30px rgba(11, 95, 255, 0.22);
+  box-shadow: 0 18px 30px rgba(22, 24, 34, 0.22);
 }
 
 .download-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, var(--accent-hover), #2d68db);
+  background: #f1f3ff;
+  color: #000000;
 }
 
 .download-button:disabled {
@@ -314,22 +316,25 @@ select {
 }
 
 .validate-button {
+  width: 100%;
   margin-top: 16px;
   padding: 15px 22px;
-  border: 1px solid #15803d;
+  border: 1px solid #161822;
   border-radius: 16px;
-  background: linear-gradient(135deg, #16a34a, #15803d);
+  background: #161822;
   color: #ffffff;
   font-weight: 700;
   cursor: pointer;
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
-  box-shadow: 0 14px 28px rgba(21, 128, 61, 0.22);
+  box-shadow: 0 14px 28px rgba(22, 24, 34, 0.22);
 }
 
 .validate-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  border-color: #166534;
-  box-shadow: 0 16px 32px rgba(22, 101, 52, 0.28);
+  background: #f1f3ff;
+  border-color: #161822;
+  color: #000000;
+  box-shadow: 0 16px 32px rgba(22, 24, 34, 0.18);
 }
 
 .validate-button:disabled {
@@ -435,21 +440,23 @@ select {
 }
 
 .automation-button {
+  width: 100%;
   margin-top: 18px;
   padding: 15px 22px;
   border: 0;
   border-radius: 16px;
-  background: linear-gradient(135deg, var(--accent), #4182ff);
+  background: #161822;
   color: #ffffff;
   font-weight: 700;
   cursor: pointer;
   transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
-  box-shadow: 0 18px 30px rgba(11, 95, 255, 0.22);
+  box-shadow: 0 18px 30px rgba(22, 24, 34, 0.22);
 }
 
 .automation-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, var(--accent-hover), #2d68db);
+  background: #f1f3ff;
+  color: #000000;
 }
 
 .automation-button:disabled {
