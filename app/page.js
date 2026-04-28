@@ -5,14 +5,20 @@ import { useRef, useState } from "react";
 const SEMESTER_OPTIONS = ["2025H", "2026V", "2026H"];
 
 function buildValidationDetailsText(validationResult) {
+  const isSl = validationResult.source === "sl";
   const lines = [
     "Validation details",
     "",
+    `Source: ${isSl ? "Service Layer (semester fees)" : "Local"}`,
     `Validation status: ${validationResult.isValid ? "Passed" : "Failed"}`,
-    `Rows checked: ${validationResult.summary.rowCount}`,
+    ...(isSl
+      ? []
+      : [`Rows checked: ${validationResult.summary.rowCount}`]),
     `Error count: ${validationResult.summary.errorCount}`,
     `Warning count: ${validationResult.summary.warningCount}`,
-    `Allowed semesters: ${validationResult.semesters.join(", ") || "None"}`,
+    ...(isSl
+      ? []
+      : [`Allowed semesters: ${validationResult.semesters.join(", ") || "None"}`]),
     ""
   ];
 
@@ -56,7 +62,9 @@ export default function HomePage() {
   const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState("");
   const [validationResult, setValidationResult] = useState(null);
+  const [validationMode, setValidationMode] = useState("local");
   const fileInputRef = useRef(null);
+  const slFileInputRef = useRef(null);
 
   async function handleDownload() {
     const trimmedSchoolName = schoolName.trim();
@@ -112,24 +120,14 @@ export default function HomePage() {
     }
   }
 
-  async function handleFileChange(event) {
-    const uploadedFile = event.target.files?.[0];
-
-    setValidationResult(null);
-    setValidationError("");
-    setSelectedFileName(uploadedFile?.name || "");
-
-    if (!uploadedFile) {
-      return;
-    }
-
+  async function runValidation(uploadedFile, endpoint) {
     const formData = new FormData();
     formData.append("file", uploadedFile);
 
     setIsValidating(true);
 
     try {
-      const response = await fetch("/api/validate", {
+      const response = await fetch(endpoint, {
         method: "POST",
         body: formData
       });
@@ -149,10 +147,47 @@ export default function HomePage() {
     }
   }
 
+  async function handleFileChange(event) {
+    const uploadedFile = event.target.files?.[0];
+
+    setValidationResult(null);
+    setValidationError("");
+    setSelectedFileName(uploadedFile?.name || "");
+
+    if (!uploadedFile) {
+      return;
+    }
+
+    setValidationMode("local");
+    await runValidation(uploadedFile, "/api/validate");
+  }
+
+  async function handleSlFileChange(event) {
+    const uploadedFile = event.target.files?.[0];
+
+    setValidationResult(null);
+    setValidationError("");
+    setSelectedFileName(uploadedFile?.name || "");
+
+    if (!uploadedFile) {
+      return;
+    }
+
+    setValidationMode("sl");
+    await runValidation(uploadedFile, "/api/validate-sl");
+  }
+
   function handleValidateClick() {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
       fileInputRef.current.click();
+    }
+  }
+
+  function handleValidateSlClick() {
+    if (slFileInputRef.current) {
+      slFileInputRef.current.value = "";
+      slFileInputRef.current.click();
     }
   }
 
@@ -177,7 +212,11 @@ export default function HomePage() {
       return;
     }
 
-    window.alert("Pretend the user is redirected to the automation tool");
+    window.open(
+      "http://localhost:3001/dashboard/semester-fees/hackathon",
+      "_blank",
+      "noopener,noreferrer"
+    );
   }
 
   return (
@@ -333,6 +372,13 @@ export default function HomePage() {
               className="file-input"
               onChange={handleFileChange}
             />
+            <input
+              ref={slFileInputRef}
+              type="file"
+              accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12"
+              className="file-input"
+              onChange={handleSlFileChange}
+            />
 
             <button
               type="button"
@@ -340,7 +386,18 @@ export default function HomePage() {
               onClick={handleValidateClick}
               disabled={isValidating}
             >
-              {isValidating ? "Validating..." : "Validate Excel"}
+              {isValidating && validationMode === "local" ? "Validating..." : "Validate Excel"}
+            </button>
+
+            <button
+              type="button"
+              className="validate-button validate-button-sl"
+              onClick={handleValidateSlClick}
+              disabled={isValidating}
+            >
+              {isValidating && validationMode === "sl"
+                ? "Validating via SL..."
+                : "Validate Excel using SL"}
             </button>
 
             {selectedFileName ? (
@@ -361,10 +418,16 @@ export default function HomePage() {
                     ? "Validation passed"
                     : "Validation found issues"}
                 </h2>
-                <p className="validation-summary">
-                  Checked {validationResult.summary.rowCount} data row
-                  {validationResult.summary.rowCount === 1 ? "" : "s"}.
-                </p>
+                {validationResult.source === "sl" ? (
+                  <p className="validation-summary">
+                    Validated via Service Layer (semester fees).
+                  </p>
+                ) : (
+                  <p className="validation-summary">
+                    Checked {validationResult.summary.rowCount} data row
+                    {validationResult.summary.rowCount === 1 ? "" : "s"}.
+                  </p>
+                )}
 
                 {validationResult.warnings?.length ? (
                   <div className="validation-block">

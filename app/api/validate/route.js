@@ -47,7 +47,7 @@ export async function POST(request) {
       }
     }
 
-    return Response.json(result, { status: 200 });
+    return Response.json({ ...result, source: "local" }, { status: 200 });
   } catch {
     return Response.json(
       { error: "Unable to validate the uploaded workbook." },
