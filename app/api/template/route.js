@@ -5,9 +5,13 @@ import {
   MACRO_ENABLED_EXTENSION
 } from "../../../lib/macro-workbook";
 
+const STANDARD_WORKBOOK_CONTENT_TYPE =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+const STANDARD_WORKBOOK_EXTENSION = "xlsx";
+
 export async function POST(request) {
   try {
-    const { schoolName, semesters, includeTestData, includeRandomErrors } =
+    const { schoolName, semesters, includeTestData, includeRandomErrors, includeMacros } =
       await request.json();
 
     if (!schoolName || typeof schoolName !== "string" || !schoolName.trim()) {
@@ -28,18 +32,28 @@ export async function POST(request) {
       );
     }
 
+    const shouldIncludeMacros = Boolean(includeMacros);
     const workbook = await buildWorkbook(schoolName.trim(), semesters, {
       includeTestData: Boolean(includeTestData),
-      includeRandomErrors: Boolean(includeTestData) && Boolean(includeRandomErrors)
+      includeRandomErrors: Boolean(includeTestData) && Boolean(includeRandomErrors),
+      includeMacros: shouldIncludeMacros
     });
     const workbookBuffer = await workbook.xlsx.writeBuffer();
-    const buffer = await addMacroButtonToWorkbookBuffer(workbookBuffer);
-    const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.${MACRO_ENABLED_EXTENSION}`;
+    const buffer = shouldIncludeMacros
+      ? await addMacroButtonToWorkbookBuffer(workbookBuffer)
+      : workbookBuffer;
+    const extension = shouldIncludeMacros
+      ? MACRO_ENABLED_EXTENSION
+      : STANDARD_WORKBOOK_EXTENSION;
+    const contentType = shouldIncludeMacros
+      ? MACRO_ENABLED_CONTENT_TYPE
+      : STANDARD_WORKBOOK_CONTENT_TYPE;
+    const filename = `${schoolName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-template.${extension}`;
 
     return new Response(buffer, {
       status: 200,
       headers: {
-        "Content-Type": MACRO_ENABLED_CONTENT_TYPE,
+        "Content-Type": contentType,
         "Content-Disposition": `attachment; filename="${filename}"`
       }
     });

@@ -16,19 +16,20 @@ This application is a small portal for institutions that need to prepare and val
 2. The user selects exactly one semester from the preset list: `2025H`, `2026V`, `2026H`.
 3. The user can optionally choose to include test data in the Excel file before downloading it.
 4. The user can also choose to include a few random validation errors and blank required cells in that test data for easier testing.
-5. When the user clicks `Download Template`, the browser sends the request to `/api/template`.
-6. The server generates a new `.xlsm` (macro-enabled) workbook using `ExcelJS`, then post-processes the raw binary using `JSZip` to inject a VBA macro and a clickable button.
-7. The workbook includes:
+5. The user can choose whether to include macros. This option is off by default.
+6. When the user clicks `Download Template`, the browser sends the request to `/api/template`.
+7. The server generates a new workbook using `ExcelJS`. If macros are requested, it post-processes the raw binary using `JSZip` to inject a VBA macro and a clickable button.
+8. The workbook includes:
    - A `Students` sheet
    - An `Instructions` sheet
    - The institution short name in the sheet metadata
    - The selected semester in the sheet metadata
    - 100 ready-to-fill table rows with validation rules, borders, and alternating row colors
-   - A clickable macro button in cell E3 labelled `Add 100 new empty rows`; clicking it runs the embedded VBA macro (`Add100Rows`) which extends the table by 100 rows, and the conditional formatting automatically applies the correct alternating colors to the new rows
+   - If macros are included, a clickable macro button in cell E3 labelled `Add 100 new empty rows`; clicking it runs the embedded VBA macro (`Add100Rows`) which extends the table by 100 rows, and the conditional formatting automatically applies the correct alternating colors to the new rows
    - Gridlines hidden on both sheets; borders are shown only on the editable data cells
    - Optional sample/test data if the user selected that option
-8. If test data is included, the workbook is prefilled with 100 rows of sample data that matches the validation rules unless the optional random-error setting intentionally changes a few cells.
-9. The `Students` sheet contains these columns:
+9. If test data is included, the workbook is prefilled with 100 rows of sample data that matches the validation rules unless the optional random-error setting intentionally changes a few cells.
+10. The `Students` sheet contains these columns:
    - `PersonID`
    - `Fornavn`
    - `Etternavn`
@@ -36,8 +37,8 @@ This application is a small portal for institutions that need to prepare and val
    - `Epost`
    - `Prefiks`
    - `Mobilnummer`
-8. The selected semester is shown above the table in the workbook metadata and is not part of the table itself.
-9. Excel validation rules are built into the template so the sheet itself helps prevent bad input:
+11. The selected semester is shown above the table in the workbook metadata and is not part of the table itself.
+12. Excel validation rules are built into the template so the sheet itself helps prevent bad input:
    - `PersonID` must contain exactly 11 digits
    - `Fornavn` is required and must contain letters only
    - `Etternavn` is required and must contain letters only, with no special characters
@@ -45,7 +46,7 @@ This application is a small portal for institutions that need to prepare and val
    - `Epost` must look like a valid email address
    - `Prefiks` must start with `+`, followed by digits only, with no spaces, and `00` is not allowed
    - `Mobilnummer` must contain exactly 8 digits with no spaces
-10. The generated workbook is returned to the browser and downloaded as an `.xlsm` file.
+13. The generated workbook is returned to the browser and downloaded as an `.xlsx` file by default, or an `.xlsm` file when macros are included.
 
 ## Validate Workbook
 

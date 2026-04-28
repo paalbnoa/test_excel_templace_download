@@ -49,6 +49,7 @@ export default function HomePage() {
   const [selectedSemester, setSelectedSemester] = useState("");
   const [includeTestData, setIncludeTestData] = useState(false);
   const [includeRandomErrors, setIncludeRandomErrors] = useState(false);
+  const [includeMacros, setIncludeMacros] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -83,7 +84,8 @@ export default function HomePage() {
           schoolName: trimmedSchoolName,
           semesters: [selectedSemester],
           includeTestData,
-          includeRandomErrors
+          includeRandomErrors,
+          includeMacros
         })
       });
 
@@ -95,9 +97,10 @@ export default function HomePage() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       const safeName = trimmedSchoolName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const extension = includeMacros ? "xlsm" : "xlsx";
 
       link.href = url;
-      link.download = `${safeName || "school"}-template.xlsm`;
+      link.download = `${safeName || "school"}-template.${extension}`;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -260,6 +263,16 @@ export default function HomePage() {
             </div>
 
             <div className="download-option-group">
+              <label className="download-option">
+                <input
+                  type="checkbox"
+                  checked={includeMacros}
+                  onChange={(event) => setIncludeMacros(event.target.checked)}
+                />
+                <span>Include macros</span>
+              </label>
+
+              <p className="download-option-title">For testing purposes</p>
               <label className="download-option">
                 <input
                   type="checkbox"

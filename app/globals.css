@@ -249,6 +249,13 @@ select {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(243, 247, 248, 0.92));
 }
 
+.download-option-title {
+  margin: 0 4px 2px;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
 .download-option {
   display: flex;
   align-items: center;
