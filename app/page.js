@@ -46,6 +46,7 @@ const TEXT = {
     sendTitle: "3. Send to SiO",
     sendText: "Upload the Excel to SiO by using the Automation tool.",
     openAutomation: "Open automation tool",
+    apiStampAlt: "API stamp",
     whatido: "Read a step-by-step description of what this application does",
     detailsTitle: "Validation details",
     source: "Source",
@@ -104,6 +105,7 @@ const TEXT = {
     sendTitle: "3. Send til SiO",
     sendText: "Last opp Excel-filen til SiO ved å bruke automasjonsverktøyet.",
     openAutomation: "Åpne automasjonsverktøy",
+    apiStampAlt: "API-stempel",
     whatido: "Les en trinnvis beskrivelse av hva applikasjonen gjør",
     detailsTitle: "Valideringsdetaljer",
     source: "Kilde",
@@ -730,6 +732,13 @@ export default function HomePage() {
                 {labels.openAutomation}
               </button>
             </div>
+            <img
+              src="/API stamp.png"
+              alt={labels.apiStampAlt}
+              className="send-api-stamp"
+              width="1536"
+              height="1024"
+            />
           </section>
         </div>
 

@@ -522,7 +522,17 @@ select {
 }
 
 .send-panel {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+}
+
+.send-api-stamp {
+  display: block;
+  width: min(100%, 260px);
+  height: auto;
+  margin: auto auto 0;
+  object-fit: contain;
 }
 
 .automation-button {
@@ -636,5 +646,10 @@ select {
 
   .form-panel {
     padding: 18px;
+  }
+
+  .send-api-stamp {
+    width: min(100%, 220px);
+    margin-top: 28px;
   }
 }
