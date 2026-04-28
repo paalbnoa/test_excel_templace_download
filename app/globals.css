@@ -152,9 +152,13 @@ select {
   min-width: 0;
   padding: 26px;
   border-radius: 22px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 252, 0.98));
+  background: #f8e5ff;
   border: 1px solid rgba(19, 32, 51, 0.08);
+  transition: background 140ms ease;
+}
+
+.form-panel:hover {
+  background: #eebfff;
 }
 
 .flow-arrow {

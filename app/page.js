@@ -270,7 +270,7 @@ export default function HomePage() {
               name="schoolName"
               type="text"
               className="school-input"
-              placeholder="Example: UiO"
+              placeholder="Example: BI"
               value={schoolName}
               onChange={(event) => {
                 setSchoolName(event.target.value);
@@ -386,7 +386,7 @@ export default function HomePage() {
               onClick={handleValidateClick}
               disabled={isValidating}
             >
-              {isValidating && validationMode === "local" ? "Validating..." : "Validate Excel"}
+              {isValidating && validationMode === "local" ? "Validating..." : "Validate Excel no SL"}
             </button>
 
             <button
