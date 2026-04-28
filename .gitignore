@@ -27,6 +27,7 @@ yarn-error.log*
 dev.log
 dev.err
 dev.out
+.next-dev-*.log
 
 # local env files
 .env*.local

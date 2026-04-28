@@ -52,7 +52,8 @@ select {
   width: min(100%, 1180px);
   min-height: 96px;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  gap: 24px;
   padding: 14px 28px;
   border-radius: 32px 32px 0 0;
   background: #f1f3ff;
@@ -66,6 +67,65 @@ select {
   width: 114px;
   max-width: 100%;
   height: auto;
+}
+
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #161822;
+}
+
+.language-icon {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+}
+
+.language-icon rect {
+  fill: transparent;
+}
+
+.language-icon circle,
+.language-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.language-options {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 1rem;
+}
+
+.language-option {
+  padding: 4px 2px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.language-option:hover,
+.language-option:focus-visible {
+  color: var(--accent-hover);
+  outline: none;
+  text-decoration: underline;
+}
+
+.language-option-active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.language-divider {
+  color: #161822;
 }
 
 .hero-card {
@@ -315,7 +375,6 @@ select {
   background: #161822;
   color: white;
   font-weight: 700;
-  text-transform: capitalize;
   cursor: pointer;
   transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
   box-shadow: 0 18px 30px rgba(22, 24, 34, 0.22);
@@ -545,6 +604,11 @@ select {
 
   .top-banner-logo {
     width: 114px;
+  }
+
+  .language-icon {
+    width: 32px;
+    height: 32px;
   }
 
   .hero-card {
