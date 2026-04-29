@@ -11,7 +11,7 @@ const STANDARD_WORKBOOK_EXTENSION = "xlsx";
 
 export async function POST(request) {
   try {
-    const { schoolName, semesters, includeTestData, includeRandomErrors, includeMacros } =
+    const { schoolName, semesters, includeTestData, includeRandomErrors, includeMacros, numRows } =
       await request.json();
 
     if (!schoolName || typeof schoolName !== "string" || !schoolName.trim()) {
@@ -32,11 +32,13 @@ export async function POST(request) {
       );
     }
 
+    const parsedNumRows = Number.isInteger(numRows) && numRows > 0 ? numRows : 1000;
     const shouldIncludeMacros = Boolean(includeMacros);
     const workbook = await buildWorkbook(schoolName.trim(), semesters, {
       includeTestData: Boolean(includeTestData),
       includeRandomErrors: Boolean(includeTestData) && Boolean(includeRandomErrors),
-      includeMacros: shouldIncludeMacros
+      includeMacros: shouldIncludeMacros,
+      numRows: parsedNumRows
     });
     const workbookBuffer = await workbook.xlsx.writeBuffer();
     const buffer = shouldIncludeMacros

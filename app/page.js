@@ -19,6 +19,7 @@ const TEXT = {
     institutionPlaceholder: "Example: BI",
     semesterLabel: "Semester fee",
     semesterPlaceholder: "Select semester",
+    numRowsLabel: "Number of rows",
     testingTitle: "For testing purposes",
     includeTestData: "Include 100 rows of test data",
     includeRandomErrors: "Include random errors",
@@ -47,7 +48,7 @@ const TEXT = {
     sendText: "Upload the Excel to SiO by using the Automation tool.",
     openAutomation: "Open automation tool",
     apiStampAlt: "API stamp",
-    whatido: "Read a step-by-step description of what this application does",
+    whatido: "For devs: step-by-step description of what this application does",
     detailsTitle: "Validation details",
     source: "Source",
     sourceSl: "Service Layer (semester fees)",
@@ -78,6 +79,7 @@ const TEXT = {
     institutionPlaceholder: "Eksempel: BI",
     semesterLabel: "Semesteravgift",
     semesterPlaceholder: "Velg semester",
+    numRowsLabel: "Antall rader",
     testingTitle: "For testing",
     includeTestData: "Inkluder 100 rader med testdata",
     includeRandomErrors: "Inkluder tilfeldige feil",
@@ -280,6 +282,7 @@ export default function HomePage() {
   const [language, setLanguage] = useState("en");
   const [schoolName, setSchoolName] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
+  const [numRows, setNumRows] = useState(1000);
   const [includeTestData, setIncludeTestData] = useState(false);
   const [includeRandomErrors, setIncludeRandomErrors] = useState(false);
   const [includeMacros, setIncludeMacros] = useState(false);
@@ -333,7 +336,8 @@ export default function HomePage() {
           semesters: [selectedSemester],
           includeTestData,
           includeRandomErrors,
-          includeMacros
+          includeMacros,
+          numRows
         })
       });
 
@@ -540,6 +544,21 @@ export default function HomePage() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="semester-group">
+              <label className="field-label" htmlFor="numRows">
+                {labels.numRowsLabel}
+              </label>
+              <input
+                type="number"
+                id="numRows"
+                name="numRows"
+                className="semester-select"
+                min={1}
+                value={numRows}
+                onChange={(event) => setNumRows(Number(event.target.value))}
+              />
             </div>
 
             <div className="download-option-group">
