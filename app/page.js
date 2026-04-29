@@ -154,6 +154,8 @@ const MESSAGE_TRANSLATIONS_NO = {
     "Den opplastede arbeidsboken inneholder ingen datarader i tabellen.",
   "PersonID is required and must be a valid 11-digit Norwegian personal number with a real birth date, valid individual number, and valid MOD11 check digits.":
     "PersonID er påkrevd og må være et gyldig norsk fødselsnummer med 11 sifre, ekte fødselsdato, gyldig individnummer og gyldige MOD11-kontrollsifre.",
+  "PersonID is required and must be a valid 11-digit Norwegian personal number. The person must be younger than 100 years old. The first 6 digits must be a real birth date, followed by a valid individual number for the birth year and two valid MOD11 check digits.":
+    "PersonID er påkrevd og må være et gyldig norsk fødselsnummer med 11 sifre. Personen må være yngre enn 100 år. De første 6 sifrene må være en ekte fødselsdato, etterfulgt av et gyldig individnummer for fødselsåret og to gyldige MOD11-kontrollsifre.",
   "Fornavn is required and must contain letters only.":
     "Fornavn er påkrevd og kan kun inneholde bokstaver.",
   "Etternavn is required and must contain letters only. No special characters are allowed.":

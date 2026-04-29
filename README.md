@@ -18,7 +18,7 @@ A small Next.js app that generates an Excel template to use for importing of stu
 
 - Professional landing page with a school-name input
 - Downloadable `.xlsx` template
-- Optional 100 rows of test data
+- Optional 100 rows of test data (within 1000 pre-formatted blank rows)
 - Optional random validation errors and blank required cells for testing
 - Email validation in Excel
 - Separate school-name field above the table
